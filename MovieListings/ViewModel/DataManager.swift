@@ -33,6 +33,15 @@ final class DataManager : ObservableObject {
         return self.movies
     }
     
+    /**
+     A getter for the detailed metadata for the movie passed in.
+     
+     If not all metadata is immediately available, attemps to fetch missing details from the API.
+     
+     - Parameter name: the name of the movie to find out more metadata
+     
+     - Returns: a Movie View Model object with as much metadtata is available at the time of calling.
+     */
     public func getMovieDetails(forMovieName name:String) -> MovieViewModel {
         var movieDetailObject = self.movies.filter({ (movie : MovieViewModel) -> Bool in
             name == movie.name
@@ -55,6 +64,17 @@ final class DataManager : ObservableObject {
         return movieDetailObject!
     }
     
+    /**
+     Retrieves the metadata for the movie passed in (if it is not already available).
+     
+     Typically it is expected that an API will return two different "views" of the data:
+       1. a non-verbose view, with minimal details. This is useful for fetching a large list of objects
+       2. a verbose view, with all available details. This is useful for showing the user all the information about a single object
+     
+     Notifies any subscribers when the details are available.
+     
+     - Parameter movie: the movie for which the details will be retrieved
+     */
     fileprivate func fetchDetails(intoMovie movie: MovieViewModel) -> Void {
         
         // simulate a network request to the API. Use a background thread.
@@ -76,6 +96,11 @@ final class DataManager : ObservableObject {
         }
     }
     
+    /**
+     Fetches movies from the API and stores them in memory once fetched.
+     
+     Notifies any subscribers once the movies have been retrieved.
+     */
     public func loadMovies() {
         // simulate a network request to the API. Use a background thread.
         let queue = DispatchQueue(label: "data controller movie queue",

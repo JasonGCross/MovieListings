@@ -15,7 +15,11 @@ import Combine
  Encapsulates information about an Actor
  */
 final class ActorViewModel : Identifiable, ObservableObject {
+    
+    // required by Identifiable; allows this to be used as a List item
     var id = UUID()
+    
+    // required by ObservableObject; allows this to notify subscribers of a change
     let objectWillChange = PassthroughSubject<Void, Never>()
     
     // do not expose the Objective-C reference types outside
@@ -49,6 +53,11 @@ final class ActorViewModel : Identifiable, ObservableObject {
         self.actorWrapper = actorWrapper
     }
     
+    /**
+     Fetches image data from a (possibly remote) URL.
+     
+     Notifies any subscriber when the image data has been fetched.
+     */
     public func fetchImage() {
         guard nil != self.imageUrl,
             String() != self.imageUrl!.absoluteString else {

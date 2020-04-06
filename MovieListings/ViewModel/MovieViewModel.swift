@@ -95,6 +95,15 @@ final class MovieViewModel : Identifiable, ObservableObject {
         return value
     }
     
+    /**
+     Updates the metadata for this movie.
+     
+     Typically it is expected that an API will return two different "views" of the data:
+       1. a non-verbose view, with minimal details. This is useful for fetching a large list of objects
+       2. a verbose view, with all available details. This is useful for showing the user all the information about a single object
+     
+     - Parameter details: the movie details (as they are returned from the API) to be merged into this movie object
+     */
     public func updateUnderlyingDetails(details: MovieDetailWrapper) {
         self.movieDetailWrapper = details
         objectWillChange.send()
